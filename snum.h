@@ -23,6 +23,7 @@ public:
     int total;          // 总位数
     int frac;           // 小数点后有几位
     FLOORTYPE floortype;         // 是否四舍五入
+	bool hasPercision = false;
 
     snum() {}
     snum(double real, double imag) {
@@ -32,6 +33,7 @@ public:
         this->total = 0;
         this->frac = 0;
         this->floortype = ROUND;
+		this->hasPercision = false;
     }
 
     snum(double real, double imag, SYMBOL symbol, int total, int frac) {
@@ -41,6 +43,7 @@ public:
         this->total = total;
         this->frac = frac;
         this->floortype = TRUNC;
+		this->hasPercision = true;
     }
 
     void setPercision(SYMBOL symbol, int total, int frac, FLOORTYPE floortype);

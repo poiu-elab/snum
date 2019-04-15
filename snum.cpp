@@ -1,7 +1,9 @@
 #include "snum.h"
 
 snum snum::operator=(double x) {
-    this->real = cutByPercision(x);
+	if (this->hasPercision) {
+		this->real = cutByPercision(x);
+	}
     return *this;
 }
 snum snum::operator=(const snum& x) {
@@ -60,6 +62,7 @@ void snum::setPercision(SYMBOL symbol, int total, int frac, FLOORTYPE floortype)
     this->total = total;
     this->frac = frac;
     this->floortype = floortype;
+	this->hasPercision = true;
 }
 void snum::print() {
     printDouble(this->real);
