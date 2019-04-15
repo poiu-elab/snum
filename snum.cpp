@@ -23,17 +23,18 @@ double snum::cutByPercision(double num) {
     int inteLen = this->total - (symbol == SIGNED ? 1 : 0);
 
     switch (this->symbol) {
+        case UNSINGED:
+            if (inteNoFrac > Range::UNSIGNED_MAX[inteLen]) {
+                return Range::UNSIGNED_MAX[inteLen];
+            }
+            break;
         case SIGNED:
+        default:
             if (inteNoFrac > Range::SIGNED_MAX[inteLen]) {
                 return Range::SIGNED_MAX[inteLen];
             }
             if (inteNoFrac < Range::SIGNED_MIN[inteLen]) {
                 return Range::SIGNED_MIN[inteLen];
-            }
-            break;
-        case UNSINGED:
-            if (inteNoFrac > Range::UNSIGNED_MAX[inteLen]) {
-                return Range::UNSIGNED_MAX[inteLen];
             }
             break;
     }
@@ -67,7 +68,7 @@ void snum::print() {
     cout << "i" << endl;
 }
 void snum::printDouble(double x) {
-    long newX = (long)(x * Range::POW_2[this->frac]);
+    unsigned int newX = (unsigned int)(x * Range::POW_2[this->frac]);
     printf("%x", newX);
 }
 snum* snum::buildArray(int n, SYMBOL symbol, int total, int frac, FLOORTYPE floortype) {

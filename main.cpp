@@ -1,5 +1,4 @@
 #include <iostream>
-#include "TNumber.h"
 #include "snum.h"
 #include <time.h>
 
