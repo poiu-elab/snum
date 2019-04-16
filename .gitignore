@@ -1,3 +1,8 @@
-.idea/
-CMakeLists.txt
-cmake-build-debug/
+Debug/
+tmp/
+*.vcxproj
+*.v12.suo
+*.filters
+*.sdf
+*.sln
+*.opensdf

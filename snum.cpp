@@ -1,14 +1,17 @@
 #include "snum.h"
-
+snum::snum(){}
 snum snum::operator=(double x) {
-	if (this->hasPercision) {
-		this->real = cutByPercision(x);
-	}
+	this->real = cutByPercision(x);
+	this->intReal = (int)(this->real * Range::POW_2[this->frac]);
+	this->intImag = 0;
+	this->imag = 0;
     return *this;
 }
 snum snum::operator=(const snum& x) {
     this->real = cutByPercision(x.real);
     this->imag = cutByPercision(x.imag);
+	this->intReal = (int)(this->real * Range::POW_2[this->frac]);
+	this->intImag = (int)(this->imag * Range::POW_2[this->frac]);
     return *this;
 }
 double snum::cutByPercision(double num) {
@@ -42,6 +45,18 @@ double snum::cutByPercision(double num) {
     }
     return inteNoFrac / Range::POW_2[this->frac];
 }
+snum::snum(double real, double imag) {
+	this->real = real;
+	this->imag = imag;
+	this->symbol = SIGNED;
+	this->total = 0;
+	this->frac = 0;
+	this->floortype = ROUND;
+	this->hasPercision = false;
+	this->intReal = (int)(this->real * Range::POW_2[this->frac]);
+	this->intImag = (int)(this->imag * Range::POW_2[this->frac]);
+}
+
 snum snum::operator+(const snum& x) {
     double real = this->real + x.real;
     double imag = this->imag + x.imag;
@@ -65,14 +80,7 @@ void snum::setPercision(SYMBOL symbol, int total, int frac, FLOORTYPE floortype)
 	this->hasPercision = true;
 }
 void snum::print() {
-    printDouble(this->real);
-    cout << "+";
-    printDouble(this->imag);
-    cout << "i" << endl;
-}
-void snum::printDouble(double x) {
-    unsigned int newX = (unsigned int)(x * Range::POW_2[this->frac]);
-    printf("%x", newX);
+	printf("%x+%xi", this->intReal, this->intImag);
 }
 snum* snum::buildArray(int n, SYMBOL symbol, int total, int frac, FLOORTYPE floortype) {
     snum *array = new snum[n];

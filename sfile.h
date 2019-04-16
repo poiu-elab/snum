@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <WinBase.h>
 #include <string>
+#include "sdata.h"
 
 #define BAD_POS 0xFFFFFFFF
 #define SUCCESS 0
@@ -22,7 +23,6 @@ private:
 	HANDLE mmhandle; // 文件句柄
 	HANDLE mmfm; // 文件映射
 	char* mmfm_base_address; // 内存映射地址
-	RUN_MODE runMode = RUN;
 
 	DWORD createFile();
 	DWORD createFileMapping();
@@ -31,7 +31,10 @@ private:
 	}
 
 public:
-	sfile();
+	char* filename;
+	RUN_MODE runMode;
+
+	sfile() {}
 	~sfile() {
 		UnmapViewOfFile(this->mmfm_base_address);
 		CloseHandle(this->mmfm);
@@ -39,9 +42,8 @@ public:
 	}
 
 	string init();
-	char* filename;
 	//sfile(const char *filename, RUN_MODE runMode);
 	
-	char* readLine();
+	 sdata readLine();
 };
 #endif //SFILE_H

@@ -13,7 +13,6 @@ enum FLOORTYPE {ROUND, TRUNC};
 
 class snum {
 private:
-    void printDouble(double x);
     double cutByPercision(double num);
 
 public:
@@ -25,26 +24,11 @@ public:
     FLOORTYPE floortype;         // 是否四舍五入
 	bool hasPercision = false;
 
-    snum() {}
-    snum(double real, double imag) {
-        this->real =real;
-        this->imag = imag;
-        this->symbol = SIGNED;
-        this->total = 0;
-        this->frac = 0;
-        this->floortype = ROUND;
-		this->hasPercision = false;
-    }
+	int intReal;
+	int intImag;
 
-    snum(double real, double imag, SYMBOL symbol, int total, int frac) {
-        this->real =real;
-        this->imag = imag;
-        this->symbol = symbol;
-        this->total = total;
-        this->frac = frac;
-        this->floortype = TRUNC;
-		this->hasPercision = true;
-    }
+	snum();
+	snum(double real, double imag);
 
     void setPercision(SYMBOL symbol, int total, int frac, FLOORTYPE floortype);
 

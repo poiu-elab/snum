@@ -1,21 +1,21 @@
 #include "sfile.h"
 
-sfile::sfile() {}
-
-string sfile::init(const char *filename, RUN_MODE runMode) {
-	this->filename = filename;
-	this->runMode = runMode;
+string sfile::init() {
 	DWORD errorCode = createFile();
-	if (NULL != errorCode)
-		printError("创建文件失败:", errorCode);
-	else if (this->runMode == DEBUG)
+	if (NULL != errorCode) {
+		printError("failed to create file handler:", errorCode);
+		return "failed to create file handler";
+	} else if (this->runMode == DEBUG)
 		cout << "create mmf handle successfully" << endl;
 	errorCode = createFileMapping();
-	if (NULL != errorCode)
-		printError("创建映射失败:", errorCode);
+	if (NULL != errorCode) {
+		printError("failed to create file mapping:", errorCode);
+		return "failed to create file mapping";
+	}
 	else if (this->runMode == DEBUG)
 		cout << "create file mapping successfully" << endl;
 	// 其他检查
+	return "";
 }
 
 DWORD sfile::createFile() {
@@ -62,13 +62,42 @@ DWORD sfile::createFileMapping() {
 	return NULL;
 }
 
-char* sfile::readLine() {
-	int len = 0;
-	char *out;
-	while (len < LINE_MAX_LEN && *(this->mmfm_base_address + len) != '\n') {
-		*(out + len) = *(this->mmfm_base_address + len);
+sdata sfile::readLine() {
+	int len = 0, index = 0, sign = 1;
+	sdata out;
+	int curNum = 0;
+	char curChar;
+	while (len < LINE_MAX_LEN && *(this->mmfm_base_address + len) != '\n'
+		&& *(this->mmfm_base_address + len)!= '\r') {
+		if (*(this->mmfm_base_address + len) == ' ') {
+			curNum *= sign;
+			switch (index) {
+				case 0: out.a = (curNum / 2048.0); break;
+				case 1: out.b = (curNum / 2048.0); break;
+				case 2: out.c = (curNum / 2048.0); break;
+				case 3: out.d = curNum; break;
+				case 4: out.e = curNum; break;
+				default:break;
+			}
+			index++;
+			curNum = 0;
+			len++;
+			sign = 1;
+			continue;
+		}
+		curChar = *(this->mmfm_base_address + len);
+		if (curChar == '-') {
+			sign = -1;
+		} else {
+			curNum = curNum * 10 + (curChar- '0');
+		}
 		len++;
 	}
-	*(out + len) = '\0';
+	out.e = curNum;
+	this->mmfm_base_address += len;
+	while (*this->mmfm_base_address == '\n' || *this->mmfm_base_address == '\r'
+		|| *this->mmfm_base_address == ' ') {
+		this->mmfm_base_address++;
+	}
 	return out;
 }
