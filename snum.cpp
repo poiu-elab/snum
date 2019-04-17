@@ -79,9 +79,7 @@ void snum::setPercision(SYMBOL symbol, int total, int frac, FLOORTYPE floortype)
     this->floortype = floortype;
 	this->hasPercision = true;
 }
-void snum::print() {
-	printf("%x+%xi", this->intReal, this->intImag);
-}
+
 snum* snum::buildArray(int n, SYMBOL symbol, int total, int frac, FLOORTYPE floortype) {
     snum *array = new snum[n];
     for (int i = 0; i < n; i++) {
@@ -93,4 +91,22 @@ void snum::fillPersision(snum arr[], int len, SYMBOL symbol, int total, int frac
     for (int i = 0; i < len; i++) {
         arr[i].setPercision(symbol, total, frac, floortype);
     }
+}
+
+void snum::print() {
+    char* format;
+    int width = ceil(this->frac / 4.0);
+    switch (width) {
+        case 1: format = "%01x+%01xi";break;
+        case 2: format = "%02x+%02xi";break;
+        case 3: format = "%03x+%03xi";break;
+        case 4: format = "%04x+%04xi";break;
+        case 5: format = "%05x+%05xi";break;
+        case 6: format = "%06x+%06xi";break;
+        case 7: format = "%07x+%07xi";break;
+        case 8:
+        default:
+            format = "%08x+%08xi";break;
+    }
+    printf(format, this->intReal, this->intImag);
 }

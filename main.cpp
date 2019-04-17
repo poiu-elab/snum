@@ -19,8 +19,7 @@ int main() {
     snum *x = snum::buildArray(100, SIGNED, 10, 2, ROUND);
     snum y[100];
     snum::fillPersision(y, 100, SIGNED, 10, 2, ROUND);
-	
-	// 文件的使用
+    
 	sfile input;
 	input.filename = "data.txt";
 	input.runMode = DEBUG;
@@ -33,7 +32,7 @@ int main() {
 		cout << ",d=" << line.d;
 		cout << ",e=" << line.e << endl;
 	}
-	
+
 	getchar();
     return 0;
 }
