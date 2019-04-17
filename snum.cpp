@@ -95,7 +95,7 @@ void snum::fillPersision(snum arr[], int len, SYMBOL symbol, int total, int frac
 
 void snum::print() {
     char* format;
-    int width = ceil(this->frac / 4.0);
+    int width = ceil(this->total / 4.0);
     switch (width) {
         case 1: format = "%01x+%01xi";break;
         case 2: format = "%02x+%02xi";break;
