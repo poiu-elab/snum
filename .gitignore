@@ -6,3 +6,6 @@ tmp/
 *.sdf
 *.sln
 *.opensdf
+.idea/
+CMakeLists.txt
+cmake-build-debug/
