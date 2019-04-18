@@ -45,5 +45,6 @@ public:
 	//sfile(const char *filename, RUN_MODE runMode);
 	
 	 sdata readLine();
+	 double* readLine(int n);
 };
 #endif //SFILE_H

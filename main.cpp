@@ -26,12 +26,12 @@ int main() {
 	input.runMode = DEBUG;
 	input.init();
 	for (int i = 0; i < 3; i++) {
-		sdata line = input.readLine();
-		cout << "a="; line.a.print();
-		cout << ",b="; line.b.print();
-		cout << ",c="; line.c.print();
-		cout << ",d=" << line.d;
-		cout << ",e=" << line.e << endl;
+		//sdata line = input.readLine();
+		double* line = input.readLine(5);
+		for (int j = 0; j < 5; j++) {
+			cout << *(line + j) << " ";
+		}
+		cout << endl;
 	}
 	
 	getchar();

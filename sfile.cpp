@@ -62,6 +62,30 @@ DWORD sfile::createFileMapping() {
 	return NULL;
 }
 
+double* sfile::readLine(int n) {
+	double* out = new double[n];
+	int sign = 1, index = 0;
+	double curNum = 0;
+	for (int i = 0; i < n; i++) {
+		while (*(this->mmfm_base_address) == ' ') this->mmfm_base_address++;
+		if (*(this->mmfm_base_address) == '-') {
+			sign = -1;
+			this->mmfm_base_address++;
+		}
+		char cur = *(this->mmfm_base_address);
+		while (cur >= '0' && cur <= '9') {
+			curNum = curNum * 10 + cur - '0';
+			cur = *(++this->mmfm_base_address);
+		}
+		out[index++] = curNum * sign;
+		curNum = 0;
+		sign = 1;
+	}
+	while (*(this->mmfm_base_address) != '\n') this->mmfm_base_address++;
+	this->mmfm_base_address++;
+	return out;
+}
+
 sdata sfile::readLine() {
 	int len = 0, index = 0, sign = 1;
 	sdata out;
